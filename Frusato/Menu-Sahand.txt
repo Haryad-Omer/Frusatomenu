@@ -1,0 +1,199 @@
+Hot Drinks
+
+ • Espresso: 2,000
+ • Ristretto: 2,000
+ • Lungo: 2,000
+ • Americano: 2,000
+ • Macchiato: 2,000
+ • Cappuccino: 2,000
+ • Matcha latte: 3,500
+ • Mocha: 3,500
+ • Affogato: 3,500
+ • Flat white: 3,000
+ • Nescafe: 2,500
+ • Hot chocolate: 3,000
+ • Qazwan: 2,000
+ • Arabic coffee: 2,000
+ • Turkish coffee: 2,000
+ • Hazelnut coffee: 3,000
+ • Caffeine: 3,500
+ • Flavored hot chocolate: 3,500
+ • Double Espresso: 2,500
+
+Cold Drinks
+
+ • Cold brew: 3,000
+ • Ice latte: 4,000
+ • Matcha latte: 4,000
+ • Ice cappuccino: 4,000
+ • Ice Americano: 3,000
+ • Ice mocha: 3,500
+ • Ice chocolate: 3,500
+ • Flavored ice chocolate: 3,500
+ • Ice caffeine: 3,500
+ • Black eye: 3,000
+ • Double Espresso: 2,500
+
+Bubble Tea
+
+ • Watermelon: 4,000
+ • Miss Melon: 4,000
+ • Mango Melon: 4,000
+ • Coco Vanilla: 4,000
+ • Coco Pineapple: 4,000
+ • Banana: 4,000
+ • Oreo: 4,000
+ • Tropical: 4,000
+ • Tropical tropical: 4,000
+ • Matcha: 4,000
+ • Caramel: 4,000
+ • Blueberry: 4,000
+ • Mango: 4,000
+ • Peach: 4,000
+ • Chocolate: 4,000
+ • Vanilla: 4,000
+ • Pineapple: 4,000
+ • Strawberry: 4,000
+ • Milk Berry: 4,000
+ • Taro: 4,000
+ • Yellow Melon: 4,000
+
+Mocktail
+
+ • Maski: 3,000
+ • Strawberry: 4,000
+ • Blueberry: 4,000
+ • Mango: 4,000
+ • Peach: 4,000
+ • Passion Fruit: 4,000
+ • Coconut: 4,000
+ • Pineapple: 4,000
+ • Vanilla: 4,000
+ • Coffee: 4,000
+ • Your Mix: 4,000
+
+Milkshake
+
+ • Strawberry: 3,500
+ • Coconut: 3,500
+ • Vanilla: 3,500
+ • Chocolate: 3,500
+ • StrawBanana: 3,500
+ • Yellow Melon: 3,500
+ • Banana: 4,000
+ • Oreo: 4,000
+ • Caramel: 4,000
+ • Mango: 4,000
+ • Pistachio: 5,000
+ • Saffron: 6,000
+
+Desserts
+
+ • Japanese cake: (No price listed)
+ • Croissant: (No price listed)
+ • Today’s Special: (No price listed)
+
+Kakigori
+
+ • Yellow Melon: 4,000
+ • Watermelon: 4,000
+ • Mango Melon: 4,000
+ • Coco Vanilla: 4,000
+ • Coco Pineapple: 4,000
+ • Banana: 4,000
+ • Matcha: 4,000
+ ---------
+  <main>
+      <div class="favorites-container">
+        <h2 class="favorites-title">Your Favorites</h2>
+        <div id="favorites-list"></div>
+        <p id="no-favorites" style="text-align: center; display: none">
+          No favorites added yet!
+        </p>
+      </div>
+    </main>
+    <script>
+      window.onload = function () {
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const favoritesList = document.getElementById("favorites-list");
+        const noFavoritesMsg = document.getElementById("no-favorites");
+
+        favoritesList.innerHTML = ""; // Clear previous list
+
+        if (favorites.length === 0) {
+          noFavoritesMsg.style.display = "block";
+        } else {
+          noFavoritesMsg.style.display = "none"; // Hide message if there are favorites
+          favorites.forEach((item, index) => {
+            const div = document.createElement("div");
+            div.className = "favorite-item";
+            div.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="favorite-image">
+                        <span class="favorite-name">${item.name}</span>
+                        <span class="favorite-price">${item.price}</span>
+                        <button class="remove-button" onclick="removeFromFavorites(${index})">Remove</button>
+                    `;
+            favoritesList.appendChild(div);
+          });
+        }
+      };
+
+      function removeFromFavorites(index) {
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        favorites.splice(index, 1); // Remove the item at the specified index
+        localStorage.setItem("favorites", JSON.stringify(favorites)); // Update local storage
+        window.onload(); // Reload the favorites list to reflect changes
+      }
+    </script>
+    -------
+          body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #1a3f77;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0;
+      }
+      .favorites-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .favorites-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+      .favorite-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .favorite-item:last-child {
+        border-bottom: none;
+      }
+      .favorite-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-right: 15px;
+      }
+      .favorite-name {
+        font-size: 18px;
+        flex: 1;
+      }
+      .favorite-price {
+        font-size: 16px;
+        color: #1a3f77;
+      }

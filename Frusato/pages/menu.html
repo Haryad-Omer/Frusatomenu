@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafe Menu</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+
+/* Heart Button Styling */
+.heart-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #1a3f77; /* Default color */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+.heart-button.favorited i {
+    color: red; /* Change to your desired color */
+}
+
+/* Categories Styling */
+.categories {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to enable horizontal scroll */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 0;
+    list-style: none; /* Remove bullet points */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    margin-top: 7rem;
+}
+
+.categories li {
+    flex: 0 0 auto; /* Prevent flex from growing/shrinking */
+    margin: 10px; /* Spacing between items */
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column; /* Stack image and text */
+    align-items: center; /* Center content */
+    text-decoration: none; /* Remove underline */
+    background: var(--clr-white); /* Background color */
+    border: 1px solid var(--clr-blue); /* Border color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Spacing inside the card */
+    transition: box-shadow 0.3s; /* Smooth shadow transition */
+}
+
+
+
+.category-item img {
+    max-width: 50px; /* Set a max width for images */
+    margin-bottom: 5px; /* Spacing between image and text */
+}
+
+.category-item span {
+    color: var(--clr-blue); /* Text color */
+    font-weight: bold; /* Make text bold */
+}
+
+/* Hide Scrollbar */
+.categories::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit browsers */
+}
+
+.category-item.active::after {
+    content: ''; /* Necessary for the pseudo-element */
+    position: absolute;
+    left: 0; /* Align to the left of the item */
+    right: 0; /* Stretch to the right of the item */
+    bottom: -2px; /* Position the line just below the text */
+    height: 2px; /* Height of the underline */
+    background-color: var(--clr-blue); /* Color of the underline */
+}
+.card {
+  width: 100%;
+  height: 350px; /* Set a fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1); /* Slight scale on hover */
+  box-shadow: 0 10px 20px gray ;
+  transition: .3s;
+}
+
+.card img {
+  max-height: 150px; /* Set max height for images */
+  object-fit: cover; /* Ensure images cover the space properly */
+}
+
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1rem;
+  text-align: center;
+  color: var(--clr-blue);
+}
+
+.card-text {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.heart-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button {
+  background-color: #1a3f77; /* Blue background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  padding: 5px 10px; /* Spacing inside button */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.add-button:hover {
+  background-color: #155a92; /* Darker blue on hover */
+}
+
+@media (max-width: 576px) {
+  .card {
+    height: 300px; /* Adjust height for smaller screens */
+  }
+}
+
+
+/* Media Queries */
+@media (min-width: 769px) {
+    .categories {
+        overflow-x: hidden; /* Disable horizontal scrolling on larger devices */
+    }
+}
+
+@media (max-width: 576px) {
+    .card-title {
+        font-size: 0.9rem; /* Smaller font size for small devices */
+    }
+}
+
+/* List Styling */
+ul {
+    list-style-type: none;
+}
+
+ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+ul li img {
+    width: 40px;
+    height: 40px;
+}
+
+/* Navbar Styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: rgba(11, 67, 152, 0.3); /* Semi-transparent blue background */
+  backdrop-filter: blur(8px); /* Blur effect */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+.navbar:hover  {
+    background-color: #1a3f77; /* Change to blue on hover */
+}
+
+/* Navbar Link Styling */
+.nav-link {
+    color: white; /* Default link color */
+    transition: color 0.3s ease-in-out; /* Smooth transition for color */
+}
+
+.nav-link:hover {
+    color: white; /* Change link color to white on hover */
+}
+
+.navbar-brand {
+  align-items: center;
+  display: flex;  
+}
+.navbar-brand img {
+  height: 50px;
+  width: 50px;
+  margin-right: 1rem;
+  border-radius: 50%;
+}
+.navbar:hover h4{
+  color: white;
+  font-weight: 400;
+}
+.navbar:hover img{
+ border: 1.4px solid white;
+}
+
+     
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg  ">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="../images/Logo.jpg" alt="Logo"/>
+          <h4>
+          Frusato
+        </h4>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./favorite.html">Favorite</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+<!-- Categories -->
+
+    <!-- Categories -->
+    <div class="container my-4">
+      <ul class="categories">
+          <li>
+              <a href="#" onclick="showCategory('all')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="All" />
+                  <span>All</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('hot-drinks')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Hot Drinks" />
+                  <span>Hot Drinks</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('cold-drinks')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Cold Drinks" />
+                  <span>Cold Drinks</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('bubble-tea')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Bubble Tea" />
+                  <span>Bubble Tea</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('mocktail')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Mocktail" />
+                  <span>Mocktail</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('milkshake')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Milkshake" />
+                  <span>Milkshake</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('kakigori')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Kakigori" />
+                  <span>Kakigori</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" onclick="showCategory('desserts')" class="category-item">
+                  <img src="../images/Hot Drinks/Americano.png" alt="Desserts" />
+                  <span>Desserts</span>
+              </a>
+          </li>
+      </ul>
+    </div>
+
+  
+  
+    <!-- Cards -->
+    <div class="container">
+      <div class="category" id="all">
+      </div>
+
+      <!-- Hot Drinks  -->
+      <div class="category mb-3" id="hot-drinks">
+        <h2 class="text-center">Hot Drinks</h2>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title ">Espresso</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button" data-item="Espresso" onclick="addToFavorites('Espresso', '2,000 IQD', '../images/Hot Drinks/Espresso.png', this)">
+                  <i class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Ristrretto.png"
+                class="card-img-top"
+                alt="Ristretto"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ristretto</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button" data-item="Ristretto" onclick="addToFavorites('Ristretto', '2,000 IQD', '../images/Hot Drinks/Ristrretto.png', this)">
+                  <i class="fa fa-heart"></i>
+              </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Lungo.png"
+                class="card-img-top"
+                alt="Lungo"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Lungo</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button" data-item="Lungo" onclick="addToFavorites('Lungo', '2,000 IQD','../images/Hot Drinks/Lungo.png', this)">
+                  <i class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Americano"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Americano</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button" onclick="addToFavorites('Americano', '2,000 IQD','../images/Hot Drinks/Americano.png')">
+                  <i class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Macchiato.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Macchiato</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Macchiato.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Cappuccino</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Matcha latte</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Mocha</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Affogato</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Flat white</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Nescafe</h5>
+                <p class="card-text">2,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Double Espresso</h5>
+                <p class="card-text">2,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Hot chocolate</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Qazwan</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Arabic coffee</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Turkish coffee</h5>
+                <p class="card-text">2,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Hazelnut coffee</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Caffeine</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Espresso.png"
+                class="card-img-top"
+                alt="Espresso"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Flavored hot chocolate</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Add more hot drinks here -->
+        
+        </div>
+        
+      </div>
+
+      <!-- Cold Drinks -->
+      <div class="category mb-3" id="cold-drinks">
+        <h2 class="text-center">Cold Drinks</h2>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Cold Brew</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice latte</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Matcha latte</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Double Espresso</h5>
+                <p class="card-text">2,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice Cappuccino</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice Americano</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice mocha</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice chocolate</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Flavored ice chocolate</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Ice caffeine</h5>
+                <p class="card-text">3,500 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Americano.png"
+                class="card-img-top"
+                alt="Cold Brew"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Black eye</h5>
+                <p class="card-text">3,000 IQD</p>
+                <button class="heart-button"  onclick="addToFavorites('Espresso', '2,000 IQD','../images/Hot Drinks/Espresso.png')">  <i  class="fa fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Add more cold drinks here -->
+        </div>
+      </div>
+
+     <!-- Bubble Tea -->
+      <div class="category mb-3" id="Bubble-tea">
+        <h2 class="text-center">Bubble Tea</h2>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Watermelon</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Miss Melon</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Mango Melon</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Coco Vanilla</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Coco Pineapple</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Banana</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Oreo</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Tropical</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Tropical tropical</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Matcha</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Caramel</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Blueberry</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Mango</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Peach</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Chocolate</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Vanilla</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Pineapple</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Strawberry</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Milk Berry</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Taro</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-4 mt-3">
+            <div class="card">
+              <img
+                src="../images/Hot Drinks/Flat-White.png"
+                class="card-img-top"
+                alt="Green Tea"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Yellow Melon</h5>
+                <p class="card-text">4,000 IQD</p>
+                <button class="heart-button"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mocktails -->
+      <div class="category mb-3" id="Mocktail">
+        <h2 class="text-center">Mocktail</h2>
+        <div class="row">
+            <!-- Add mocktail drinks here -->
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Maski</h5>
+                    <p class="card-text">3,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Strawberry</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Blueberry</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Mango</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Peach</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Passion</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Coconut</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Pineapple</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Vanilla</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Coffee</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-3 col-sm-6 col-4 mt-3">
+                <div class="card">
+                  <img
+                    src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                    class="card-img-top"
+                    alt="Green Tea"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Your Mix</h5>
+                    <p class="card-text">4,000 IQD</p>
+                    <button class="heart-button"></button>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+        </div>
+
+        <!--Desserts  -->
+        <div class="category mb-3" id="Desserts">
+            <h2 class="text-center">Desserts</h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Japanese cake</h5>
+                          <p class="card-text">3,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Croissant</h5>
+                          <p class="card-text">3,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Hazelnut-Coffee.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Today’s Special</h5>
+                          <p class="card-text">3,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milkshakes -->
+        <div class="category mb-3" id="Milkshake">
+            <h2 class="text-center">Milkshake</h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Strawberry</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Coconut</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Vanilla</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Chocolate</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">StrawBanana</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Yellow Melon</h5>
+                          <p class="card-text">3,500 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Banana</h5>
+                          <p class="card-text">4,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Oreo</h5>
+                          <p class="card-text">4,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Caramel</h5>
+                          <p class="card-text">4,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Mango</h5>
+                          <p class="card-text">4,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Pistachio</h5>
+                          <p class="card-text">5,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-4 mt-3">
+                    <div class="card">
+                        <img
+                          src="../images/Hot Drinks/Latte.png"
+                          class="card-img-top"
+                          alt="Green Tea"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Saffron</h5>
+                          <p class="card-text">6,000 IQD</p>
+                          <button class="heart-button"></button>
+                        </div>
+                      </div>
+                </div>
+               </div>
+            </div>
+
+            <!-- Kakigoris -->
+            <div class="category mb-3" id="Kakigori">
+                <h2 class="text-center">Kakigori</h2>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Yellow Melon</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Watermelon</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Mango Melon</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Coco Vanilla</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Coco Pineapple</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Banana</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-4 mt-3">
+                        <div class="card">
+                            <img
+                              src="../images/Hot Drinks/Latte.png"
+                              class="card-img-top"
+                              alt="Green Tea"
+                            />
+                            <div class="card-body">
+                              <h5 class="card-title">Matcha</h5>
+                              <p class="card-text">4,000 IQD</p>
+                              <button class="heart-button"></button>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Add other categories here (bubble-tea, mocktail, etc.) -->
+    </div>
+
+    <script>
+function showCategory(category) {
+    // Your existing logic for showing categories goes here...
+
+    // Remove 'active' class from all category items
+    const categoryItems = document.querySelectorAll('.category-item');
+    categoryItems.forEach(item => {
+        item.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked category
+    const activeItem = document.querySelector(`.category-item[onclick="showCategory('${category}')"]`);
+    if (activeItem) {
+        activeItem.classList.add('active');
+        console.log('Active item:', activeItem); // Check which item is active
+    }
+}
+
+
+      function addToFavorites(name, price, image, button) {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const existingItemIndex = favorites.findIndex(item => item.name === name);
+
+    if (existingItemIndex > -1) {
+        // If item exists, increase the count
+        favorites[existingItemIndex].count += 1;
+    } else {
+        // If item doesn't exist, add it with count 1
+        favorites.push({ name, price, image, count: 1 });
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    // Change the heart button color
+    button.classList.toggle('favorited');
+
+    // Optional: if you want to also ensure the button is red even if it was previously favorited
+    if (!button.classList.contains('favorited')) {
+        // If it wasn't favorited, ensure the class is removed
+        button.classList.remove('favorited');
+    } else {
+        // If it is now favorited, add the class
+        button.classList.add('favorited');
+    }
+}
+
+  function loadFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites.forEach(favorite => {
+        // Find the button associated with the favorite item
+        const heartButton = document.querySelector(`[data-item="${favorite.name}"]`);
+        if (heartButton) {
+            heartButton.classList.add('favorited'); // Apply the "favorited" class to change color
+        }
+    });
+}
+
+
+  // Call this function when the page loads to apply favorites
+  window.onload = loadFavorites;
+
+
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>  </body>
+</html>
